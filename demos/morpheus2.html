@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>    
+<body>
+<script src="../css_3d.js"></script>
+<style>    
+    #css3dTag1 {
+        width : 1920px;
+        height : 1080px;  
+        position : relative;   
+        border : 1px solid black;      
+        background-color: black;       
+    }
+</style>
+<div id="css3dTag1">
+    
+</div>
+<script>    
+    const tag = document.getElementById("css3dTag1");  
+    const universe = new css_3d.Universe(tag);
+    const observer = new css_3d.Observer(800, 1400);
+    observer.rotation.fromArray([-45, 45, 0],0);    
+    observer.initEventListener(document.getElementById("css3dTag1"));
+
+    const world = new css_3d.World();
+
+    universe.addObserver(observer);
+    universe.createWorld(world);    
+
+    const plane = new css_3d.Plane(1000, 1000, { 
+        border : "1px dashed cyan" 
+    })
+    plane.rotation.fromArray([90, 0, 0], 0);
+
+    const textTag = document.createElement("p");
+    textTag.innerText = "all i'm offering is the truth"
+    const text = new css_3d.Obj(textTag, {
+        fontSize : "40px",
+        color : 'white',        
+    })
+    text.position.y -= 100;    
+
+    
+    const redPill = new css_3d.Plane(50, 50, {        
+        cursor : "pointer"
+    });
+    redPill.target.title = "you take the red pill, you stay in wonderland and i show you how deep the rabbit hole goes."
+    redPill.position.y += 530;
+    redPill.position.x += 240;
+
+    const bluePill = new css_3d.Plane(50, 50, {
+        cursor : "pointer"
+    });
+    bluePill.target.title = "you take the blue pill, the story ends, you wake up in your bed and believe whatever you want to belive."
+    bluePill.position.y += 530;
+    bluePill.position.x += 750;
+
+
+    const imageTag = document.createElement("img");
+    imageTag.src = "resources/morpheus.jpg"
+    const image = new css_3d.Obj(imageTag, {
+        width : "1000px",
+        height : "1000px"
+    });    
+    imageTag.addEventListener('click', function(){
+        image.position.z = 400;
+        image.rotation.x = -90;
+    })
+    plane.addChild(image);
+    plane.addChild(redPill);  
+    plane.addChild(bluePill);    
+  
+    plane.addChild(text);
+    world.addChild(plane);    
+
+    
+    function render(){        
+        universe.update();
+        window.requestAnimationFrame(render);        
+    }
+    window.requestAnimationFrame(render);
+</script>
